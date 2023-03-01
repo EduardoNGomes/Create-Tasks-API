@@ -1,5 +1,6 @@
 import { Database } from './database.js'
 import { randomUUID } from 'node:crypto'
+import { formattedDate } from './utils/formattedDate.js'
 
 const database = new Database()
 
@@ -28,19 +29,13 @@ export const routes = [
           )
       }
 
-      const date = new Date()
-      const formattedDate = new Intl.DateTimeFormat('pt-BR', {
-        dateStyle: 'short',
-        timeStyle: 'short'
-      }).format(date)
-
       const data = {
         id: randomUUID(),
         title,
         description,
-        created_at: formattedDate,
-        updated_at: formattedDate,
-        completed_at: formattedDate
+        created_at: formattedDate(),
+        updated_at: formattedDate(),
+        completed_at: formattedDate()
       }
 
       const task = database.insert('tasks', data)
