@@ -1,6 +1,7 @@
 import { Database } from './database.js'
 import { randomUUID } from 'node:crypto'
 import { formattedDate } from './utils/formattedDate.js'
+import { buildRoutePath } from './utils/buildRoutePath.js'
 
 const database = new Database()
 
@@ -58,7 +59,7 @@ export const routes = [
   // DELETE
   {
     method: 'DELETE',
-    path: '/tasks',
+    path: buildRoutePath('/tasks/:id'),
     handler: (req, res) => {
       return res.end('ACESSOU USERS COM DELETE')
     }
