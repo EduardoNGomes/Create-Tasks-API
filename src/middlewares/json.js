@@ -4,7 +4,7 @@ export async function json(req, res) {
     buffers.push(chunk)
   }
   try {
-    req.body = json.parse(Buffer.concat(buffers).toString())
+    req.body = JSON.parse(Buffer.concat(buffers).toString())
   } catch {
     req.body = null
   }
