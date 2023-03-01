@@ -97,9 +97,16 @@ export const routes = [
   // PATCH
   {
     method: 'PATCH',
-    path: buildRoutePath('/tasks'),
+    path: buildRoutePath('/tasks/:id/complete'),
     handler: (req, res) => {
-      return res.end('ACESSOU USERS COM PATCH')
+      const { id } = req.params
+
+      const [message, code] = database.updateStatusTask(
+        'tasks',
+        id,
+        formattedDate()
+      )
+      return res.writeHead(code).end(JSON.stringify(message))
     }
   }
 ]

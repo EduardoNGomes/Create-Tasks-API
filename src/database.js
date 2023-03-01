@@ -48,6 +48,9 @@ export class Database {
       message = 'ID incorrect'
       code = 404
     }
+
+    this.#persist()
+
     return [message, code]
   }
 
@@ -69,5 +72,31 @@ export class Database {
     return [message, code]
   }
 
-  updateStatusTask(table, id, completed_at) {}
+  updateStatusTask(table, id, completed_at) {
+    let message = 'task conclude'
+    let code = 200
+    const indexToCompleteTask = this.#database[table].findIndex(
+      task => task.id === id
+    )
+    if (indexToCompleteTask > -1) {
+      if (this.#database[table][indexToCompleteTask].completed_at) {
+        message = 'This task is completed'
+        code = 400
+      } else {
+        const taskConclude = {
+          ...this.#database[table][indexToCompleteTask],
+          completed_at
+        }
+
+        this.#database[table].splice(indexToCompleteTask, 1, taskConclude)
+      }
+    } else {
+      message = 'ID incorrect'
+      code = 404
+    }
+
+    this.#persist
+
+    return [message, code]
+  }
 }
