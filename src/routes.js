@@ -36,7 +36,7 @@ export const routes = [
         description,
         created_at: formattedDate(),
         updated_at: formattedDate(),
-        completed_at: formattedDate()
+        completed_at: null
       }
 
       const task = database.insert('tasks', data)
@@ -51,9 +51,34 @@ export const routes = [
   // PUT
   {
     method: 'PUT',
-    path: buildRoutePath('/tasks'),
+    path: buildRoutePath('/tasks/:id'),
     handler: (req, res) => {
-      return res.end('ACESSOU USERS COM PUT')
+      const { id } = req.params
+
+      const { title, description } = req.body
+
+      let data = {}
+      if (!title) {
+        data = {
+          description,
+          updated_at: formattedDate()
+        }
+      } else if (!description) {
+        data = {
+          title,
+          updated_at: formattedDate()
+        }
+      } else {
+        data = {
+          title,
+          description,
+          updated_at: formattedDate()
+        }
+      }
+
+      const [message, code] = database.update('tasks', id, data)
+
+      return res.writeHead(code).end(JSON.stringify(message))
     }
   },
   // DELETE

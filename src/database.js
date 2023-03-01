@@ -34,6 +34,23 @@ export class Database {
     return data
   }
 
+  update(table, id, data) {
+    let message = 'Success updated task'
+    let code = 200
+    const indexToUpdate = this.#database[table].findIndex(
+      task => task.id === id
+    )
+    const taskUpdated = { ...this.#database[table][indexToUpdate], ...data }
+
+    if (indexToUpdate > -1) {
+      this.#database[table].splice(indexToUpdate, 1, taskUpdated)
+    } else {
+      message = 'ID incorrect'
+      code = 404
+    }
+    return [message, code]
+  }
+
   delete(table, id) {
     let message = ''
     let code = 204
@@ -51,4 +68,6 @@ export class Database {
 
     return [message, code]
   }
+
+  updateStatusTask(table, id, completed_at) {}
 }
