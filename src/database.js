@@ -33,4 +33,22 @@ export class Database {
 
     return data
   }
+
+  delete(table, id) {
+    let message = ''
+    let code = 204
+    const taskToDelete = this.#database[table].findIndex(task => task.id === id)
+
+    if (taskToDelete > -1) {
+      this.#database[table].splice(taskToDelete, 1)
+      message = 'Task deleted'
+    } else {
+      message = 'ID incorrect'
+      code = 404
+    }
+
+    this.#persist()
+
+    return [message, code]
+  }
 }

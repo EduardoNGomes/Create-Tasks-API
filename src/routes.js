@@ -8,7 +8,7 @@ const database = new Database()
 export const routes = [
   {
     method: 'GET',
-    path: '/tasks',
+    path: buildRoutePath('/tasks'),
     handler: (req, res) => {
       const allTasks = database.select('tasks')
 
@@ -18,7 +18,7 @@ export const routes = [
   // POST
   {
     method: 'POST',
-    path: '/tasks',
+    path: buildRoutePath('/tasks'),
     handler: (req, res) => {
       const { title, description } = req.body
 
@@ -51,7 +51,7 @@ export const routes = [
   // PUT
   {
     method: 'PUT',
-    path: '/tasks',
+    path: buildRoutePath('/tasks'),
     handler: (req, res) => {
       return res.end('ACESSOU USERS COM PUT')
     }
@@ -61,13 +61,18 @@ export const routes = [
     method: 'DELETE',
     path: buildRoutePath('/tasks/:id'),
     handler: (req, res) => {
-      return res.end('ACESSOU USERS COM DELETE')
+      const { id } = req.params
+      if (!id) {
+        return res.writeHead(404).end('id not found')
+      }
+      const [message, code] = database.delete('tasks', id)
+      return res.writeHead(code).end(JSON.stringify(message))
     }
   },
   // PATCH
   {
     method: 'PATCH',
-    path: '/tasks',
+    path: buildRoutePath('/tasks'),
     handler: (req, res) => {
       return res.end('ACESSOU USERS COM PATCH')
     }
